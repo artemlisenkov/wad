@@ -29,6 +29,19 @@
       <div class="stat-item"><span class="stat-label">Posts:</span><span class="stat-value">{{ posts.length }}</span></div>
       <div class="stat-item"><span class="stat-label">Reports:</span><span class="stat-value">{{ reports.length }}</span></div>
     </div>
+    <div class="sidebar-section chart-section">
+      <h3>Posts per category</h3>
+      <div class="bar-chart" *ngIf="categoryPostCounts.length">
+        <div *ngFor="let item of categoryPostCounts" class="bar-row">
+          <span class="bar-label">{{ item.name }}</span>
+          <div class="bar-track">
+            <div class="bar-fill" [style.width.%]="getCategoryBarWidth(item.count)" [title]="item.count + ' posts'"></div>
+          </div>
+          <span class="bar-value">{{ item.count }}</span>
+        </div>
+      </div>
+      <p *ngIf="!categoryPostCounts.length" class="chart-empty">No data yet</p>
+    </div>
   </div>
 
   <!-- Main Content -->
@@ -117,6 +130,7 @@
           <div class="post-meta">
             <span>👤 {{ post.author_name }}</span>
             <span>📍 {{ post.zone }}</span>
+            <span>💬 {{ post.comment_count ?? 0 }} comments</span>
             <span *ngIf="post.price">💰 ${{ post.price }}</span>
             <span>📅 {{ post.created_at | date:'short' }}</span>
             <span *ngIf="post.expires_at">⏱ Expires {{ post.expires_at | date:'short' }}</span>

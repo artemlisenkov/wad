@@ -45,14 +45,24 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(): void {
-    if (!this.profileForm.valid) return;
     const v = this.profileForm.value;
-    const updates: Record<string, string> = { displayName: v.displayName, zone: v.zone || '' };
+    if (v.confirmPassword && !v.password) {
+      this.errorMessage = 'Please specify the new password.';
+      return;
+    }
     if (v.password && v.password.length >= 6) {
       if (v.password !== v.confirmPassword) {
-        this.errorMessage = 'Passwords do not match';
+        this.errorMessage = 'Passwords do not match.';
         return;
       }
+    }
+    if (!this.profileForm.get('displayName')?.valid) {
+      this.errorMessage = 'Display name is required (at least 2 characters).';
+      return;
+    }
+    this.errorMessage = '';
+    const updates: Record<string, string> = { displayName: v.displayName, zone: v.zone || '' };
+    if (v.password && v.password.length >= 6) {
       updates['password'] = v.password;
     }
     this.http.put('/api/users/me', updates, { headers: this.getAuthHeaders() }).subscribe({

@@ -1,174 +1,127 @@
-/* --- Genel Container --- */
+/* App-wide components using theme */
 .container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  padding: 24px;
+  color: var(--color-text);
 }
 
-/* --- Card Stili --- */
 .card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
   margin-bottom: 20px;
+  border: 1px solid var(--color-border);
 }
 
-/* --- Login Card --- */
-.login-card {
-  max-width: 400px;
-  margin: 80px auto;
-  text-align: center;
-}
-
-.login-card .title {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.login-card .subtitle {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* --- Form Input --- */
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .form-group label {
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
+  color: var(--color-text);
+  font-size: 14px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
   font-size: 14px;
+  background: var(--color-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 88px;
 }
 
-/* --- Buttons --- */
 .btn {
-  padding: 10px 18px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  border-radius: var(--radius-md);
   font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .primary-btn {
-  background-color: #4f46e5; /* Indigo */
-  color: white;
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
 }
 
 .primary-btn:hover {
-  background-color: #4338ca;
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
 }
 
 .secondary-btn {
-  background-color: #e5e7eb; /* Gray-200 */
-  color: #333;
+  background: var(--color-secondary);
+  color: var(--color-text);
 }
 
 .secondary-btn:hover {
-  background-color: #d1d5db;
+  background: var(--color-secondary-hover);
 }
 
-/* --- Dashboard Header --- */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .dashboard-header h1 {
-  font-size: 24px;
+  font-size: 26px;
   margin: 0;
+  font-weight: 700;
+  color: var(--color-text);
 }
 
 .dashboard-header p {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-muted);
+  margin: 4px 0 0 0;
 }
 
-.create-post-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px; /* input ve butonlar arası boşluk */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  background-color: #fff;
-}
-
-.create-post-card h3 {
-  margin: 0 0 10px 0;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.create-post-card input,
-.create-post-card textarea,
-.create-post-card select {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+.alert {
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
   font-size: 14px;
-  box-sizing: border-box;
 }
 
-.create-post-card textarea {
-  min-height: 80px;
-  resize: vertical;
+.alert-error {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+  border: 1px solid #fecaca;
 }
 
-.create-post-card button {
-  align-self: flex-start; /* buton sola hizalanır */
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  background-color: #4f46e5;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.alert-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid #a7f3d0;
 }
 
-.create-post-card button:hover {
-  background-color: #4338ca;
-}
-
-/* --- Responsive düzeltme --- */
-@media (max-width: 600px) {
-  .create-post-card {
-    gap: 10px;
-    padding: 15px;
-  }
-
-  .create-post-card button {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-/* --- Filter Bar --- */
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -176,59 +129,59 @@
   margin-bottom: 20px;
 }
 
-/* --- Posts Grid --- */
-.posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+.filter-bar .btn.active,
+.view-toggle .btn.active {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
 }
 
 .post-card .category {
   display: inline-block;
-  background: #4f46e5;
+  background: var(--color-primary);
   color: white;
   font-size: 12px;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 8px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
   margin-bottom: 8px;
 }
 
 .post-card h3 {
   font-size: 18px;
   margin: 0 0 8px 0;
+  color: var(--color-text);
 }
 
 .post-card p {
   font-size: 14px;
   margin: 0 0 8px 0;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .post-footer {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
-  color: #888;
-  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
 }
 
-/* --- No posts message --- */
 .no-posts {
   text-align: center;
-  font-size: 14px;
-  color: #666;
-  margin-top: 40px;
+  font-size: 15px;
+  color: var(--color-text-muted);
+  margin-top: 48px;
+  padding: 24px;
 }
 
-/* --- Responsive adjustments --- */
 @media (max-width: 600px) {
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
-  }
-  
-  .filter-bar {
-    flex-direction: column;
+    gap: 12px;
   }
 }

@@ -64,8 +64,13 @@ postsRouter.get('/', authMiddleware, (req: Request & { user?: SessionUser | null
   const postIds = rows.map((r) => r.post_id);
   let reactionsByPost: Record<number, unknown[]> = {};
   let reactionCountsByPost: Record<number, Record<string, number>> = {};
+  let commentCountByPost: Record<number, number> = {};
   if (postIds.length > 0) {
     const placeholders = postIds.map(() => '?').join(',');
+    const commentCounts = db.prepare(`
+      SELECT post_id, COUNT(*) as c FROM comments WHERE post_id IN (${placeholders}) GROUP BY post_id
+    `).all(...postIds) as { post_id: number; c: number }[];
+    commentCountByPost = commentCounts.reduce((acc, r) => { acc[r.post_id] = r.c; return acc; }, {} as Record<number, number>);
     const allReactions = db.prepare(`
       SELECT post_id, type FROM reactions WHERE post_id IN (${placeholders})
     `).all(...postIds) as { post_id: number; type: string }[];
@@ -88,6 +93,7 @@ postsRouter.get('/', authMiddleware, (req: Request & { user?: SessionUser | null
 
   const items = rows.map((r) => ({
     ...r,
+    comment_count: commentCountByPost[r.post_id as number] ?? 0,
     myReactions: reactionsByPost[r.post_id as number] || [],
     reactionCounts: reactionCountsByPost[r.post_id as number] || {},
   }));
@@ -124,7 +130,17 @@ postsRouter.get('/admin/all', authMiddleware, requireRole('administrator'), (req
     ORDER BY ${orderBy}
     LIMIT ? OFFSET ?
   `).all(...params) as Record<string, unknown>[];
-  res.status(200).json({ content: rows, total, page, size });
+  const adminPostIds = rows.map((r) => r.post_id);
+  let commentCountByPost: Record<number, number> = {};
+  if (adminPostIds.length > 0) {
+    const placeholders = adminPostIds.map(() => '?').join(',');
+    const commentCounts = db.prepare(`
+      SELECT post_id, COUNT(*) as c FROM comments WHERE post_id IN (${placeholders}) GROUP BY post_id
+    `).all(...adminPostIds) as { post_id: number; c: number }[];
+    commentCountByPost = commentCounts.reduce((acc, r) => { acc[r.post_id] = r.c; return acc; }, {} as Record<number, number>);
+  }
+  const content = rows.map((r) => ({ ...r, comment_count: commentCountByPost[r.post_id as number] ?? 0 }));
+  res.status(200).json({ content, total, page, size });
 });
 
 postsRouter.post('/', requireAuth, (req: Request & { user?: SessionUser | null }, res: Response) => {

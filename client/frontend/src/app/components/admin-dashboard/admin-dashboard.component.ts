@@ -21,6 +21,7 @@ interface Post {
   created_at: string;
   author_name: string;
   category_name: string;
+  comment_count?: number;
 }
 
 interface Comment {
@@ -169,6 +170,17 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   private getAuthHeaders() {
     return this.authService.getAuthHeaders();
+  }
+
+  get categoryPostCounts(): { name: string; count: number }[] {
+    const countByCat = new Map<number, number>();
+    this.posts.forEach((p) => countByCat.set(p.category_id, (countByCat.get(p.category_id) ?? 0) + 1));
+    return this.categories.map((c) => ({ name: c.name, count: countByCat.get(c.category_id) ?? 0 }));
+  }
+
+  getCategoryBarWidth(count: number): number {
+    const max = Math.max(1, ...this.categoryPostCounts.map((x) => x.count));
+    return max ? (count / max) * 100 : 0;
   }
 
   fetchUsers(): void {

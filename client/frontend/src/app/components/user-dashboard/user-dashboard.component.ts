@@ -23,6 +23,7 @@ interface Post {
   category_name: string;
   myReactions: string[];
   reactionCounts?: Record<string, number>;
+  comment_count?: number;
 }
 
 interface Comment {
@@ -329,6 +330,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.selectedPost = null;
     this.postComments = [];
     this.commentForm.reset();
+  }
+
+  onCreatePostSubmit(): void {
+    this.createPostForm.markAllAsTouched();
+    if (this.createPostForm.valid) this.createPost();
   }
 
   createPost(): void {
