@@ -6,6 +6,7 @@ import { authRouter } from './routes/auth';
 import { categoriesRouter } from './routes/categories';
 import { postsRouter } from './routes/posts';
 import { usersRouter } from './routes/users';
+import { authMiddleware } from './auth';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -15,6 +16,8 @@ async function start() {
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
+
+app.use(authMiddleware);
 
 app.use('/api/authentication', authRouter);
 app.use('/api/categories', categoriesRouter);
